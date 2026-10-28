@@ -1,0 +1,74 @@
+name: deepresearch-py
+
+services:
+  # ── 中间件 ──────────────────────────────────────────────────────
+  mysql:
+    image: mysql:8.4
+    container_name: drp-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ruoyi123
+      MYSQL_DATABASE: ruoyi_fastapi
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-pruoyi123"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: drp-postgres
+    environment:
+      POSTGRES_USER: deepresearch
+      POSTGRES_PASSWORD: deepresearch123
+      POSTGRES_DB: deepresearch
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    container_name: drp-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  # ── 应用服务 ────────────────────────────────────────────────────
+  # 本地开发更推荐直接 uv run 启动两个服务（热重载友好），
+  # compose 里的 app 服务用于完整容器化验证。
+  admin:
+    build: ./admin
+    container_name: drp-admin
+    environment:
+      MYSQL_HOST: mysql
+      REDIS_HOST: redis
+      REDIS_DB: 0
+    ports:
+      - "8000:8000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  ai:
+    build: ./ai
+    container_name: drp-ai
+    environment:
+      POSTGRES_HOST: postgres
+      REDIS_HOST: redis
+    ports:
+      - "8001:8001"
+    depends_on:
+      - postgres
+      - redis
+
+volumes:
+  mysql_data:
+  pg_data:
+  redis_data:

@@ -1,0 +1,34 @@
+# dependencies / venv
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# uv
+# uv.lock 需要提交（两个子项目各自维护），这里不忽略
+
+# env / secrets
+.env
+.env.local
+*.env.bak
+
+# tooling caches
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# node（若后续加前端）
+node_modules/
+dist/
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+
+# misc
+*.db
+*.sqlite3
+*.log
