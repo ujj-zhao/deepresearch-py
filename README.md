@@ -38,6 +38,8 @@ uv run uvicorn deepresearch.main:app --reload --port 8001
 
 ## 学习路线（ai 服务）
 
+> 详细任务清单、目标图编排与技术决策见 [ai/docs/ROADMAP.md](ai/docs/ROADMAP.md)。
+
 | 阶段 | 内容 | 锻炼点 |
 |---|---|---|
 | P1 | 最小图核心：协调→规划→研究→报告，CLI 跑通 | LangGraph、Pydantic |
