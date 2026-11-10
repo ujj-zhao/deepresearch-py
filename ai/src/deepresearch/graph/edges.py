@@ -16,7 +16,10 @@ def after_planner(state: ResearchState) -> str:
     plan = state.get("current_plan")
     if plan is None:
         return "reporter"
-    return "reporter" if plan.has_enough_context else "researcher"
+    if plan.has_enough_context:
+        return "reporter"
+    # auto_accept_plan 是 state 键（请求时写入），不是 plan 字段；缺省 True 保持 M1 行为
+    return "researcher" if state.get("auto_accept_plan", True) else "human_feedback"
 
 
 def after_researcher(state: ResearchState) -> str:
@@ -30,3 +33,14 @@ def after_researcher(state: ResearchState) -> str:
         return "reporter"
     has_pending = any(s.execution_status == "pending" for s in plan.steps)
     return "researcher" if has_pending else "reporter"
+
+
+def after_human_feedback(state: ResearchState) -> str:
+    """human_feedback 出口：有驳回意见 → planner 重规划；通过/超限强放行 → researcher。
+
+    强放行分支依赖节点清空 feedback_content——路由只看意见非空，
+    节点不清空这里就会弹回 planner 死循环（见 human_feedback 节点注释）。
+    """
+    if state.get("feedback_content"):
+        return "planner"
+    return "researcher"

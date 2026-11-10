@@ -30,6 +30,7 @@ dist/
 
 # misc
 *.db
+*.sqlite
 *.sqlite3
 *.log
 

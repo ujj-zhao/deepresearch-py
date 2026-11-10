@@ -48,6 +48,8 @@ class Settings(BaseSettings):
     LLM_API_VERSION: str = ""
     LLM_API_MODEL: str = ""
 
+    MAX_PLAN_ITERATIONS: int = 3  # 计划迭代上限（PRD 6.1；原版默认 1，放宽支持多轮驳回）
+    CHECKPOINT_DB: str = "checkpoints.sqlite"  # 检查点文件路径；空串 → MemorySaver（不落盘）
 
 
 settings = Settings()
