@@ -8,6 +8,14 @@ dependencies = [
     "fastapi>=0.141.1",
     "uvicorn[standard]>=0.52.4",
     "pydantic-settings>=2.15.0",
+    "langgraph>=1.2.18",
+    "langchain-openai>=1.7.3",
+    "langchain-core>=1.7.0",
+    "langchain-deepseek>=1.1.1",
+    "ipython>=8.39.0",
+    "langchain>=1.4.8",
+    "loguru>=0.7.3",
+    "langgraph-checkpoint-sqlite>=3.1.3",
 ]
 
 # 依赖按路线图分阶段引入，避免骨架期依赖树过重：
@@ -15,6 +23,9 @@ dependencies = [
 #   P2 流式+人机协同 -> langgraph-checkpoint（SSE 用 FastAPI 自带 StreamingResponse）
 #   P3 并行+RAG     -> sqlalchemy、pgvector、redis
 #   P4 生产化       -> langfuse 或 opentelemetry-sdk
+
+[project.scripts]
+deepresearch = "deepresearch.cli:main"
 
 [build-system]
 requires = ["hatchling"]
@@ -30,3 +41,9 @@ target-version = "py310"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "UP"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+    "ruff>=0.17.3",
+]

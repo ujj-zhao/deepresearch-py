@@ -37,5 +37,17 @@ class Settings(BaseSettings):
     JWT_SECRET_KEY: str = ""
     JWT_ALGORITHM: str = "HS512"
 
+    # 研究参数（对应 Java 版 DeepResearchProperties，见架构文档 §9）
+    MAX_ITERATIONS: int = 50      # 图执行最大迭代（反死循环兜底）
+    MAX_STEP_NUM: int = 3         # 单计划最大步骤数
+
+    # MODEL
+    DEEPSEEK_API_KEY: str = ""
+    LLM_API_KEY: str = ""
+    LLM_API_BASE: str = ""
+    LLM_API_VERSION: str = ""
+    LLM_API_MODEL: str = ""
+
+
 
 settings = Settings()

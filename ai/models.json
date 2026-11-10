@@ -1,0 +1,7 @@
+{
+  "models": [
+    {"name": "planner", "model_name": "deepseek-chat", "temperature": 0.0},
+    {"name": "researcher", "model_name": "deepseek-chat", "temperature": 0.0},
+    {"name": "reporter", "model_name": "deepseek-chat", "temperature": 0.3}
+  ]
+}
